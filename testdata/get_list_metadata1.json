@@ -1,0 +1,22 @@
+{
+  "list_id": "JX5LY",
+  "available": true,
+  "failed": false,
+  "download": "https://tranco-list.eu/download/JX5LY/1000000",
+  "created_on": "2022-12-11T22:00:09.199647",
+  "configuration": {
+    "providers": [
+      "alexa",
+      "umbrella",
+      "majestic",
+      "farsight"
+    ],
+    "listPrefix": "full",
+    "endDate": "2022-12-11",
+    "filterTLD": "false",
+    "filterPLD": "on",
+    "combinationMethod": "dowdall",
+    "startDate": "2022-11-12",
+    "isDailyList": true
+  }
+}
