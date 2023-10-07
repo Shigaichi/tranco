@@ -1,4 +1,4 @@
-module github.com/Shigaichi/tranco
+module github.com/shigaichi/tranco
 
 go 1.20
 

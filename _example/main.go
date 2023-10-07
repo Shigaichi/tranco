@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/Shigaichi/tranco"
+	"github.com/shigaichi/tranco"
 )
 
 func main() {
