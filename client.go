@@ -12,14 +12,14 @@ import (
 
 // Client is an API client for Tranco API.
 type Client struct {
-	HTTPClient *http.Client
-	BaseURL    string
+	httpClient *http.Client
+	baseUrl    string
 }
 
 func New() *Client {
 	return &Client{
-		BaseURL:    "https://tranco-list.eu",
-		HTTPClient: http.DefaultClient,
+		baseUrl:    "https://tranco-list.eu",
+		httpClient: http.DefaultClient,
 	}
 }
 
@@ -110,13 +110,13 @@ func (cli *Client) GetListMetadataByDate(ctx context.Context, date time.Time) (L
 }
 
 func (cli *Client) get(ctx context.Context, path string, v interface{}) error {
-	reqURL := cli.BaseURL + path
+	reqURL := cli.baseUrl + path
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, reqURL, nil)
 	if err != nil {
 		return fmt.Errorf("cannot create HTTP request: %w", err)
 	}
 
-	resp, err := cli.HTTPClient.Do(req)
+	resp, err := cli.httpClient.Do(req)
 	if err != nil {
 		return err
 	}

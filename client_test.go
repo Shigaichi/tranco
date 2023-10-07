@@ -102,8 +102,8 @@ func TestClient_GetRanks(t *testing.T) {
 			server, clean := setup(t, tt.testDataPath, tt.testStatusCode, http.MethodGet, fmt.Sprintf("/api/ranks/domain/%s", tt.args.domain))
 			defer clean()
 			cli := &Client{
-				HTTPClient: http.DefaultClient,
-				BaseURL:    server.BaseURL,
+				httpClient: http.DefaultClient,
+				baseUrl:    server.baseUrl,
 			}
 			got, err := cli.GetRanks(context.Background(), tt.args.domain)
 			if (err != nil) != tt.wantErr {
@@ -179,8 +179,8 @@ func TestClient_GetListMetadataById(t *testing.T) {
 			server, clean := setup(t, tt.testDataPath, tt.testStatusCode, http.MethodGet, fmt.Sprintf("/api/lists/id/%s", tt.args.id))
 			defer clean()
 			cli := &Client{
-				HTTPClient: http.DefaultClient,
-				BaseURL:    server.BaseURL,
+				httpClient: http.DefaultClient,
+				baseUrl:    server.baseUrl,
 			}
 			got, err := cli.GetListMetadataById(context.Background(), tt.args.id)
 			if (err != nil) != tt.wantErr {
@@ -251,8 +251,8 @@ func TestClient_GetListMetadataByDate(t *testing.T) {
 			server, clean := setup(t, tt.testDataPath, tt.testStatusCode, http.MethodGet, fmt.Sprintf("/api/lists/date/%s", tt.expectedRequestPath))
 			defer clean()
 			cli := &Client{
-				HTTPClient: http.DefaultClient,
-				BaseURL:    server.BaseURL,
+				httpClient: http.DefaultClient,
+				baseUrl:    server.baseUrl,
 			}
 			got, err := cli.GetListMetadataByDate(context.Background(), tt.args.date)
 			if (err != nil) != tt.wantErr {
@@ -293,8 +293,8 @@ func setup(t *testing.T, mockResponseBodyFile string, mockStatusCode int, expect
 	}))
 
 	cli := &Client{
-		BaseURL:    server.URL,
-		HTTPClient: server.Client(),
+		baseUrl:    server.URL,
+		httpClient: server.Client(),
 	}
 	teardown := func() {
 		server.Close()
