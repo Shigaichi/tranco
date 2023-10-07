@@ -1,7 +1,6 @@
 package tranco
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -14,27 +13,14 @@ import (
 type Client struct {
 	HTTPClient *http.Client
 	BaseURL    string
-	Username   string
-	Password   string
 }
 
-func New(username, password string) *Client {
+func New() *Client {
 	return &Client{
 		BaseURL:    "https://tranco-list.eu",
 		HTTPClient: http.DefaultClient,
-		Username:   username,
-		Password:   password,
 	}
 }
-
-//func NewAuthClient(username, password string) (*Client, error) {
-//	return &Client{
-//		BaseURL:    "https://tranco-list.eu",
-//		HTTPClient: http.DefaultClient,
-//		Username:   username,
-//		Password:   password,
-//	}, nil
-//}
 
 func (cli *Client) GetRanks(ctx context.Context, domain string) (Ranks, error) {
 	if domain == "" {
@@ -117,68 +103,6 @@ func (cli *Client) GetListMetadataByDate(ctx context.Context, date time.Time) (L
 			StartDate:         api.Configuration.StartDate.Time,
 			IsDailyList:       api.Configuration.IsDailyList,
 		},
-	}
-
-	return l, nil
-}
-
-func (cli *Client) GetAuthTest(ctx context.Context) error {
-	if cli.Username == "" || cli.Password == "" {
-		return errors.New("auth test requires username and password")
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, cli.BaseURL+"/api/auth/test", nil)
-	if err != nil {
-		return fmt.Errorf("cannot create HTTP request: %w", err)
-	}
-
-	req.SetBasicAuth(cli.Username, cli.Password)
-
-	resp, err := cli.HTTPClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("fail to get auth test: %w", err)
-	}
-
-	defer resp.Body.Close()
-
-	if !(resp.StatusCode >= http.StatusOK && resp.StatusCode < http.StatusMultipleChoices) {
-		return fmt.Errorf("http status code: %d", resp.StatusCode)
-	}
-
-	return nil
-}
-
-func (cli *Client) CreateList(ctx context.Context, configuration Configuration) (CreatedList, error) {
-	if cli.Username == "" || cli.Password == "" {
-		return CreatedList{}, errors.New("auth test requires username and password")
-	}
-
-	jsonData, err := json.Marshal(configuration)
-	if err != nil {
-		return CreatedList{}, fmt.Errorf("failed to marshall configuration: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodPut, cli.BaseURL+"/api/lists/create", bytes.NewBuffer(jsonData))
-	if err != nil {
-		return CreatedList{}, fmt.Errorf("cannot create HTTP request: %w", err)
-	}
-
-	req.SetBasicAuth(cli.Username, cli.Password)
-
-	resp, err := cli.HTTPClient.Do(req)
-	if err != nil {
-		return CreatedList{}, fmt.Errorf("fail to create lists: %w", err)
-	}
-
-	defer resp.Body.Close()
-
-	if !(resp.StatusCode >= http.StatusOK && resp.StatusCode < http.StatusMultipleChoices) {
-		return CreatedList{}, fmt.Errorf("http status code: %d", resp.StatusCode)
-	}
-
-	var l CreatedList
-	if err := json.NewDecoder(resp.Body).Decode(&l); err != nil {
-		return CreatedList{}, fmt.Errorf("cannot parse HTTP body: %w", err)
 	}
 
 	return l, nil
