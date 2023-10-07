@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 )
@@ -123,7 +124,7 @@ func (cli *Client) get(ctx context.Context, path string, v interface{}) error {
 	defer resp.Body.Close()
 
 	if !(resp.StatusCode >= http.StatusOK && resp.StatusCode < http.StatusMultipleChoices) {
-		return fmt.Errorf("http status code: %d", resp.StatusCode)
+		return cli.error(resp.StatusCode, resp.Body)
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(v); err != nil {
@@ -131,4 +132,13 @@ func (cli *Client) get(ctx context.Context, path string, v interface{}) error {
 	}
 
 	return nil
+}
+
+func (cli *Client) error(statusCode int, body io.Reader) error {
+	var aerr APIError
+	if err := json.NewDecoder(body).Decode(&aerr); err != nil {
+		return &APIError{HTTPStatus: statusCode}
+	}
+	aerr.HTTPStatus = statusCode
+	return &aerr
 }
