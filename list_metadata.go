@@ -3,7 +3,7 @@ package tranco
 import "time"
 
 type ApiListMetadata struct {
-	ListId        string           `json:"list_id"`
+	ListID        string           `json:"list_id"`
 	Available     bool             `json:"available"`
 	Failed        bool             `json:"failed"`
 	Download      string           `json:"download"`
@@ -23,7 +23,7 @@ type ApiConfiguration struct {
 }
 
 type ListMetadata struct {
-	ListId        string        `json:"list_id"`
+	ListID        string        `json:"list_id"`
 	Available     bool          `json:"available"`
 	Failed        bool          `json:"failed"`
 	Download      string        `json:"download"`

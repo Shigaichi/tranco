@@ -121,7 +121,7 @@ func TestClient_GetRanks(t *testing.T) {
 	}
 }
 
-func TestClient_GetListMetadataById(t *testing.T) {
+func TestClient_GetListMetadataByID(t *testing.T) {
 	type args struct {
 		id string
 	}
@@ -137,7 +137,7 @@ func TestClient_GetListMetadataById(t *testing.T) {
 			name: "ok",
 			args: args{id: "JX5LY"},
 			want: ListMetadata{
-				ListId:    "JX5LY",
+				ListID:    "JX5LY",
 				Available: true,
 				Failed:    false,
 				Download:  "https://tranco-list.eu/download/JX5LY/1000000",
@@ -182,9 +182,9 @@ func TestClient_GetListMetadataById(t *testing.T) {
 				httpClient: http.DefaultClient,
 				baseUrl:    server.baseUrl,
 			}
-			got, err := cli.GetListMetadataById(context.Background(), tt.args.id)
+			got, err := cli.GetListMetadataByID(context.Background(), tt.args.id)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetListMetadataById() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetListMetadataByID() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			} else if tt.wantErr {
 				if err == nil {
@@ -215,7 +215,7 @@ func TestClient_GetListMetadataByDate(t *testing.T) {
 			name: "ok",
 			args: args{date: parseDate("2022-12-11")},
 			want: ListMetadata{
-				ListId:    "JX5LY",
+				ListID:    "JX5LY",
 				Available: true,
 				Failed:    false,
 				Download:  "https://tranco-list.eu/download/JX5LY/1000000",
@@ -256,7 +256,7 @@ func TestClient_GetListMetadataByDate(t *testing.T) {
 			}
 			got, err := cli.GetListMetadataByDate(context.Background(), tt.args.date)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetListMetadataById() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetListMetadataByID() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			} else if tt.wantErr {
 				if err == nil {

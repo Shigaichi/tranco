@@ -48,18 +48,18 @@ func (cli *Client) GetRanks(ctx context.Context, domain string) (Ranks, error) {
 	return r, nil
 }
 
-func (cli *Client) GetListMetadataById(ctx context.Context, id string) (ListMetadata, error) {
+func (cli *Client) GetListMetadataByID(ctx context.Context, id string) (ListMetadata, error) {
 	if id == "" {
 		return ListMetadata{}, errors.New("id must not be empty")
 	}
 	var api ApiListMetadata
 	err := cli.get(ctx, "/api/lists/id/"+id, &api)
 	if err != nil {
-		return ListMetadata{}, fmt.Errorf("fail to get list by Id: %w", err)
+		return ListMetadata{}, fmt.Errorf("fail to get list by ID: %w", err)
 	}
 
 	l := ListMetadata{
-		ListId:    api.ListId,
+		ListID:    api.ListID,
 		Available: api.Available,
 		Failed:    api.Failed,
 		Download:  api.Download,
@@ -89,7 +89,7 @@ func (cli *Client) GetListMetadataByDate(ctx context.Context, date time.Time) (L
 	}
 
 	l := ListMetadata{
-		ListId:    api.ListId,
+		ListID:    api.ListID,
 		Available: api.Available,
 		Failed:    api.Failed,
 		Download:  api.Download,
